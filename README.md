@@ -1,74 +1,75 @@
-# 🎬 yt-dlp Fast Video Download Guide
+# 🎬 yt-dlp Video Download Guide (YouTube, Facebook, Bilibili, Streamable)
 
-คู่มือและรวมคำสั่งใช้งาน **yt-dlp** สำหรับดาวน์โหลดวิดีโอจากเว็บบอร์ดและแพลตฟอร์มต่างๆ (เช่น Bilibili, YouTube, TikTok) ด้วยความเร็วสูง
-
----
-
-## ⚡ คุณสมบัติเด่น
-* **Multi-Fragment Download:** ดึงข้อมูลไฟล์วิดีโอแบบแยกส่วนพร้อมกัน เร่งความเร็วการดาวน์โหลดให้เต็มแบนด์วิดท์
-* **Cross-Platform:** รองรับเว็บไซต์วิดีโอชั้นนำมากกว่า 1,000+ เว็บไซต์ทั่วโลก
-* **Cookies Integration:** รองรับการดึง Cookies จากเบราว์เซอร์เพื่อโหลดวิดีโอความละเอียดสูง (เช่น 1080p 60fps)
+คู่มือและรวมคำสั่งใช้งาน **yt-dlp** สำหรับดาวน์โหลดวิดีโอความเร็วสูงจากแพลตฟอร์มชั้นนำ ได้แก่ **YouTube**, **Facebook**, **Bilibili จีน** และ **Streamable**
 
 ---
 
-## 📥 การติดตั้ง (Installation)
+## 🌐 แพลตฟอร์มที่รองรับและคำสั่งแนะนำ
 
-### Windows (PowerShell / Winget)
-```powershell
-winget install yt-dlp
-
-```
-
-### หรือติดตั้งผ่าน pip (Python)
-
-```powershell
-pip install -U yt-dlp
-
-```
+| แพลตฟอร์ม | ตัวอย่างคำสั่ง / เทคนิคที่แนะนำ |
+| :--- | :--- |
+| **YouTube** | ใช้ `--concurrent-fragments` เร่งสปีด และ `--cookies-from-browser` สำหรับวิดีโอความชัดสูง |
+| **Facebook** | ใช้ `--cookies-from-browser` สำหรับวิดีโอในกลุ่มปิดหรือ Private |
+| **Bilibili (จีน)** | ใช้ `--concurrent-fragments 100` เร่งสปีดไฟล์ขนาดใหญ่ |
+| **Streamable** | ดึงไฟล์ MP3/MP4 ความเร็วสูงโดยตรง |
 
 ---
 
-## 🚀 ตัวอย่างคำสั่งใช้งานเร่งสปีด (Usage Examples)
+## 🚀 ตัวอย่างคำสั่งใช้งานจริง (PowerShell / CMD)
 
-### 1. ดาวน์โหลดวิดีโอแบบเร่งสปีด (Concurrent Fragments)
-
-แบ่งการดาวน์โหลดออกเป็นหลายส่วนพร้อมกัน ช่วยให้โหลดเร็วขึ้นอย่างมาก:
-
-* **โหมดสปีดปกติ (16 Threads):**
+### 1. YouTube
+ดาวน์โหลดคลิป YouTube ความละเอียดสูงสุด พร้อมเร่งสปีดดาวน์โหลด:
 ```cmd
-yt-dlp --concurrent-fragments 16 "[https://www.bilibili.com/video/BV1Wotf6jE8g/](https://www.bilibili.com/video/BV1Wotf6jE8g/)"
+yt-dlp --concurrent-fragments 16 "[https://www.youtube.com/watch?v=VIDEO_ID](https://www.youtube.com/watch?v=VIDEO_ID)"
 
 ```
 
+### 2. Facebook
 
-* **โหมดสปีดสูงสุด (100 Threads):**
+ดาวน์โหลดวิดีโอ Facebook (หากเป็นวิดีโอ Private หรืออยู่ในกลุ่ม แนะนำให้ดึง Cookies จากเบราว์เซอร์):
+
+```cmd
+yt-dlp --cookies-from-browser chrome "[https://www.facebook.com/watch/?v=VIDEO_ID](https://www.facebook.com/watch/?v=VIDEO_ID)"
+
+```
+
+### 3. Bilibili (จีน)
+
+ดาวน์โหลดวิดีโอ Bilibili เร่งความเร็วแบบ 100 Threads:
+
 ```cmd
 yt-dlp --concurrent-fragments 100 "[https://www.bilibili.com/video/BV1Wotf6jE8g/](https://www.bilibili.com/video/BV1Wotf6jE8g/)"
 
 ```
 
+### 4. Streamable
 
+ดาวน์โหลดวิดีโอจาก Streamable ลงโฟลเดอร์ที่กำหนด:
 
-### 2. ดาวน์โหลดโดยใช้ Cookies จากเบราว์เซอร์ (แก้ปัญหาติดสมาชิก Premium/1080p 60fps)
+```cmd
+yt-dlp -P "C:\Users\Desktop\dl" "[https://streamable.com/VIDEO_ID](https://streamable.com/VIDEO_ID)"
+
+```
+
+---
+
+## 🔑 เทคนิคแก้ไขปัญหาและตัวเลือกเพิ่มเติม
+
+### 🔓 ดึง Cookies จากเบราว์เซอร์ (แก้ติด Premium / ล็อกอิน / วิดีโอจำกัดอายุ)
+
+หากวิดีโอต้องการการล็อกอิน สามารถดึงสิทธิ์จากเบราว์เซอร์ที่คุณใช้งานอยู่ได้ทันที:
 
 ```cmd
 yt-dlp --cookies-from-browser chrome "URL_VIDEO"
 
 ```
 
-*(สามารถเปลี่ยน `chrome` เป็น `edge`, `firefox` หรือ `brave` ตามเบราว์เซอร์ที่คุณใช้)*
+*(เปลี่ยน `chrome` เป็น `edge`, `firefox` หรือ `brave` ตามเบราว์เซอร์ที่ใช้อยู่)*
 
-### 3. เลือกโหลดเฉพาะไฟล์เสียง (MP3)
+### 🎵 ดึงเฉพาะเสียง (Extract Audio / MP3)
 
 ```cmd
 yt-dlp -x --audio-format mp3 "URL_VIDEO"
-
-```
-
-### 4. กำหนดโฟลเดอร์ปลายทางสำหรับเซฟวิดีโอ
-
-```cmd
-yt-dlp -P "C:\Users\Desktop\dl" "URL_VIDEO"
 
 ```
 
@@ -76,16 +77,12 @@ yt-dlp -P "C:\Users\Desktop\dl" "URL_VIDEO"
 
 ## 🖼️ ตัวอย่างการใช้งานจริง (Example)
 
-ภาพตัวอย่างการใช้คำสั่ง `--concurrent-fragments` ดาวน์โหลดวิดีโอจาก Bilibili บน Command Prompt:
-
 ---
 
 ## ⚙️ สรุปตัวเลือกพารามิเตอร์สำคัญ
 
-| Option | คำอธิบาย |
-| --- | --- |
-| `--concurrent-fragments N` | กำหนดจำนวน Connection/Fragment สำหรับดาวน์โหลดพร้อมกัน (เช่น 16, 100) |
-| `--cookies-from-browser` | ดึงข้อมูลสิทธิ์ล็อกอินจากเบราว์เซอร์เพื่อโหลดความละเอียดสูง |
-| `-P` / `--paths` | กำหนดโฟลเดอร์ปลายทางสำหรับบันทึกไฟล์ |
-| `-x` / `--extract-audio` | แปลงไฟล์และดึงเฉพาะเสียงออกจากวิดีโอ |
-| `-U` / `--update` | อัปเดตตัวโปรแกรม `yt-dlp` เป็นเวอร์ชันล่าสุด |
+* `--concurrent-fragments N` : กำหนดจำนวน Connection/Fragment สำหรับดาวน์โหลดพร้อมกัน (เช่น 16, 100)
+* `--cookies-from-browser` : ดึงข้อมูลสิทธิ์ล็อกอินจากเบราว์เซอร์เพื่อดาวน์โหลดความละเอียดสูงหรือวิดีโอ Private
+* `-P` / `--paths` : กำหนดโฟลเดอร์ปลายทางสำหรับบันทึกไฟล์
+* `-x` / `--extract-audio` : ดึงเฉพาะไฟล์เสียงออกจากวิดีโอ
+* `-U` / `--update` : อัปเดตตัวโปรแกรม yt-dlp เป็นเวอร์ชันล่าสุด
