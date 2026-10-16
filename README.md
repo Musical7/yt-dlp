@@ -1,6 +1,6 @@
 # 🎬 yt-dlp Video Download Guide (YouTube, Facebook, Bilibili, Streamable)
 
-คู่มือ คำสั่งใช้งาน และขั้นตอนการติดตั้ง **yt-dlp** ร่วมกับ **FFmpeg** สำหรับดาวน์โหลดวิดีโอความเร็วสูงจากแพลตฟอร์มชั้นนำ ได้แก่ **YouTube**, **Facebook**, **Bilibili จีน** และ **Streamable**
+คู่มือ คำสั่งใช้งาน วิธีแก้ไขปัญหา และขั้นตอนการติดตั้ง **yt-dlp** ร่วมกับ **FFmpeg** สำหรับดาวน์โหลดวิดีโอความเร็วสูงจากแพลตฟอร์มชั้นนำ ได้อย่างสมบูรณ์แบบ
 
 ---
 
@@ -9,33 +9,22 @@
 เพื่อให้สามารถดาวน์โหลดและรวมไฟล์วิดีโอความละเอียดสูง (1080p, 4K) หรือแปลงเป็น MP3 ได้อย่างสมบูรณ์ ควรติดตั้งทั้ง **yt-dlp** และ **FFmpeg** ครับ
 
 ### 1. ติดตั้ง yt-dlp
-เปิด **PowerShell** หรือ **Command Prompt** แล้วเลือกใช้คำสั่งตามวิธีที่คุณสะดวก:
-
-* **ผ่าน Winget (แนะนำสำหรับ Windows):**
-  ```powershell
-  winget install yt-dlp
-
-```
-
-* **ผ่าน Python (pip):**
+เปิด **PowerShell** หรือ **Command Prompt** แล้วรันคำสั่ง:
 ```powershell
-pip install -U yt-dlp
+winget install yt-dlp
 
 ```
 
+### 2. ติดตั้ง FFmpeg (จำเป็นสำหรับการผสานไฟล์วิดีโอและเสียง)
 
+รันคำสั่งผ่าน PowerShell:
 
-### 2. ติดตั้ง FFmpeg (จำเป็นสำหรับการผสานไฟล์วิดีโอ+เสียงความชัดสูง)
-
-* **ผ่าน Winget (แนะนำสำหรับ Windows):**
 ```powershell
 winget install Gyan.FFmpeg
 
 ```
 
-
-
-> 💡 **ตรวจสอบการติดตั้ง:** พิมพ์ `yt-dlp --version` และ `ffmpeg -version` หากขึ้นเลขเวอร์ชันแสดงว่าพร้อมใช้งานแล้ว
+> 💡 **ตรวจสอบการติดตั้ง:** พิมพ์ `yt-dlp --version` และ `ffmpeg -version` เพื่อเช็กความพร้อม
 
 ---
 
@@ -43,48 +32,42 @@ winget install Gyan.FFmpeg
 
 | แพลตฟอร์ม | ตัวอย่างคำสั่ง / เทคนิคที่แนะนำ |
 | --- | --- |
-| **YouTube** | ใช้ `--concurrent-fragments` เร่งสปีด และ `--cookies-from-browser` สำหรับวิดีโอความชัดสูง |
+| **YouTube** | ใช้ `--concurrent-fragments` เร่งสปีด และระบุโฟลเดอร์ปลายทาง |
 | **Facebook** | ใช้ `--cookies-from-browser` สำหรับวิดีโอในกลุ่มปิดหรือ Private |
 | **Bilibili (จีน)** | ใช้ `--concurrent-fragments 100` เร่งสปีดไฟล์ขนาดใหญ่ |
 | **Streamable** | ดึงไฟล์ MP3/MP4 ความเร็วสูงโดยตรง |
 
 ---
 
-## 🚀 ตัวอย่างคำสั่งใช้งานจริง (PowerShell / CMD)
+## 🚀 ตัวอย่างคำสั่งใช้งานจริงและวิธีระบุโฟลเดอร์ (PowerShell / CMD)
 
-### 1. YouTube
+เพื่อป้องกันปัญหา `Permission Denied` (เนื่องจากบันทึกในโฟลเดอร์ระบบ เช่น System32) แนะนำให้ใช้พารามิเตอร์ `-P` เพื่อระบุโฟลเดอร์ปลายทาง เช่น โฟลเดอร์ Downloads:
 
-ดาวน์โหลดคลิป YouTube ความละเอียดสูงสุด พร้อมเร่งสปีดดาวน์โหลด:
+### 1. YouTube (พร้อมระบุโฟลเดอร์ Downloads)
 
 ```cmd
-yt-dlp --concurrent-fragments 16 "[https://www.youtube.com/watch?v=VIDEO_ID](https://www.youtube.com/watch?v=VIDEO_ID)"
+yt-dlp --concurrent-fragments 16 -P "C:\Users\petch\Downloads" "[https://youtu.be/GgBjViWRDLY](https://youtu.be/GgBjViWRDLY)"
 
 ```
 
 ### 2. Facebook
 
-ดาวน์โหลดวิดีโอ Facebook (หากเป็นวิดีโอ Private หรืออยู่ในกลุ่ม แนะนำให้ดึง Cookies จากเบราว์เซอร์):
-
 ```cmd
-yt-dlp --cookies-from-browser chrome "[https://www.facebook.com/watch/?v=VIDEO_ID](https://www.facebook.com/watch/?v=VIDEO_ID)"
+yt-dlp --cookies-from-browser chrome -P "C:\Users\petch\Downloads" "[https://www.facebook.com/watch/?v=VIDEO_ID](https://www.facebook.com/watch/?v=VIDEO_ID)"
 
 ```
 
-### 3. Bilibili (จีน)
-
-ดาวน์โหลดวิดีโอ Bilibili เร่งความเร็วแบบ 100 Threads:
+### 3. Bilibili (จีน) (เร่งสปีดแบบ 100 Threads)
 
 ```cmd
-yt-dlp --concurrent-fragments 100 "[https://www.bilibili.com/video/BV1Wotf6jE8g/](https://www.bilibili.com/video/BV1Wotf6jE8g/)"
+yt-dlp --concurrent-fragments 100 -P "C:\Users\petch\Downloads" "[https://www.bilibili.com/video/BV1Wotf6jE8g/](https://www.bilibili.com/video/BV1Wotf6jE8g/)"
 
 ```
 
 ### 4. Streamable
 
-ดาวน์โหลดวิดีโอจาก Streamable ลงโฟลเดอร์ที่กำหนด:
-
 ```cmd
-yt-dlp -P "C:\Users\Desktop\dl" "[https://streamable.com/VIDEO_ID](https://streamable.com/VIDEO_ID)"
+yt-dlp -P "C:\Users\petch\Downloads" "[https://streamable.com/VIDEO_ID](https://streamable.com/VIDEO_ID)"
 
 ```
 
@@ -94,14 +77,12 @@ yt-dlp -P "C:\Users\Desktop\dl" "[https://streamable.com/VIDEO_ID](https://strea
 
 ### 🔓 ดึง Cookies จากเบราว์เซอร์ (แก้ติด Premium / ล็อกอิน / วิดีโอจำกัดอายุ)
 
-หากวิดีโอต้องการการล็อกอิน สามารถดึงสิทธิ์จากเบราว์เซอร์ที่คุณใช้งานอยู่ได้ทันที:
-
 ```cmd
 yt-dlp --cookies-from-browser chrome "URL_VIDEO"
 
 ```
 
-*(เปลี่ยน `chrome` เป็น `edge`, `firefox` หรือ `brave` ตามเบราว์เซอร์ที่ใช้อยู่)*
+*(เปลี่ยน `chrome` เป็น `edge`, `firefox` หรือ `brave` ตามเบราว์เซอร์ที่ใช้งาน)*
 
 ### 🎵 ดึงเฉพาะเสียง (Extract Audio / MP3)
 
@@ -118,8 +99,8 @@ yt-dlp -x --audio-format mp3 "URL_VIDEO"
 
 ## ⚙️ สรุปตัวเลือกพารามิเตอร์สำคัญ
 
+* `-P` / `--paths` : กำหนดโฟลเดอร์ปลายทางสำหรับบันทึกไฟล์ (แก้ปัญหา Permission Denied)
 * `--concurrent-fragments N` : กำหนดจำนวน Connection/Fragment สำหรับดาวน์โหลดพร้อมกัน (เช่น 16, 100)
-* `--cookies-from-browser` : ดึงข้อมูลสิทธิ์ล็อกอินจากเบราว์เซอร์เพื่อดาวน์โหลดความละเอียดสูงหรือวิดีโอ Private
-* `-P` / `--paths` : กำหนดโฟลเดอร์ปลายทางสำหรับบันทึกไฟล์
+* `--cookies-from-browser` : ดึงข้อมูลสิทธิ์ล็อกอินจากเบราว์เซอร์
 * `-x` / `--extract-audio` : ดึงเฉพาะไฟล์เสียงออกจากวิดีโอ
 * `-U` / `--update` : อัปเดตตัวโปรแกรม yt-dlp เป็นเวอร์ชันล่าสุด
