@@ -123,6 +123,3 @@ yt-dlp -x --audio-format mp3 "URL_VIDEO"
 * `-P` / `--paths` : กำหนดโฟลเดอร์ปลายทางสำหรับบันทึกไฟล์
 * `-x` / `--extract-audio` : ดึงเฉพาะไฟล์เสียงออกจากวิดีโอ
 * `-U` / `--update` : อัปเดตตัวโปรแกรม yt-dlp เป็นเวอร์ชันล่าสุด
-   git push origin main
-
-```
