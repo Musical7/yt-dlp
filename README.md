@@ -33,9 +33,9 @@ winget install Gyan.FFmpeg
 | แพลตฟอร์ม | ตัวอย่างคำสั่ง / เทคนิคที่แนะนำ |
 | --- | --- |
 | **YouTube** | ใช้ `--concurrent-fragments` เร่งสปีด และระบุโฟลเดอร์ปลายทาง |
-| **Facebook** | ใช้ `--cookies-from-browser` สำหรับวิดีโอในกลุ่มปิดหรือ Private |
-| **Bilibili (จีน)** | ใช้ `--concurrent-fragments 100` เร่งสปีดไฟล์ขนาดใหญ่ |
-| **Streamable** | ดึงไฟล์ MP3/MP4 ความเร็วสูงโดยตรง |
+| **Facebook / Reels** | ใช้ระบุพารามิเตอร์ `-P` เพื่อเซฟลงโฟลเดอร์ปลายทางโดยตรง |
+| **Bilibili (จีน)** | ใช้ `--concurrent-fragments 16` หรือ `100` เร่งสปีด และรองรับการดึง Cookies |
+| **Streamable** | ดึงไฟล์ MP4 ความเร็วสูงโดยตรง |
 
 ---
 
@@ -50,55 +50,72 @@ yt-dlp --concurrent-fragments 16 -P "C:\Users\petch\Downloads" "[https://youtu.b
 
 ```
 
-### 2. Facebook
+### 2. Facebook Reels
 
 ```cmd
-yt-dlp --cookies-from-browser chrome -P "C:\Users\petch\Downloads" "[https://www.facebook.com/watch/?v=VIDEO_ID](https://www.facebook.com/watch/?v=VIDEO_ID)"
+yt-dlp -P "C:\Users\petch\Downloads" "[https://www.facebook.com/reel/2193380978264902](https://www.facebook.com/reel/2193380978264902)"
 
 ```
 
-### 3. Bilibili (จีน) (เร่งสปีดแบบ 100 Threads)
+### 3. Bilibili (จีน) (เร่งสปีดและดึงพรีเมียมคุกกี้ถ้าจำเป็น)
 
 ```cmd
-yt-dlp --concurrent-fragments 100 -P "C:\Users\petch\Downloads" "[https://www.bilibili.com/video/BV1Wotf6jE8g/](https://www.bilibili.com/video/BV1Wotf6jE8g/)"
+yt-dlp --concurrent-fragments 16 -P "C:\Users\petch\Downloads" "[https://www.bilibili.com/video/BV1rfH666E9P](https://www.bilibili.com/video/BV1rfH666E9P)"
 
 ```
 
 ### 4. Streamable
 
 ```cmd
-yt-dlp -P "C:\Users\petch\Downloads" "[https://streamable.com/VIDEO_ID](https://streamable.com/VIDEO_ID)"
+yt-dlp -P "C:\Users\petch\Downloads" "[https://streamable.com/kzejhv](https://streamable.com/kzejhv)"
 
 ```
 
 ---
 
-## 🔑 เทคนิคแก้ไขปัญหาและตัวเลือกเพิ่มเติม
+## 🔑 เทคนิคแก้ไขปัญหา (Troubleshooting)
 
-### 🔓 ดึง Cookies จากเบราว์เซอร์ (แก้ติด Premium / ล็อกอิน / วิดีโอจำกัดอายุ)
+### 🍪 1. แก้ปัญหา `Could not copy Chrome cookie database`
 
-```cmd
-yt-dlp --cookies-from-browser chrome "URL_VIDEO"
+* **สาเหตุ:** เกิดจาก **Google Chrome กำลังเปิดใช้งานอยู่** ทำให้ไฟล์ Cookies โดนล็อก
 
-```
 
-*(เปลี่ยน `chrome` เป็น `edge`, `firefox` หรือ `brave` ตามเบราว์เซอร์ที่ใช้งาน)*
+* **วิธีแก้:** ปิดหน้าต่าง Chrome ทั้งหมด (รวมถึงตรวจสอบใน Task Manager) แล้วลองรันคำสั่งใหม่อีกครั้ง
 
-### 🎵 ดึงเฉพาะเสียง (Extract Audio / MP3)
 
-```cmd
-yt-dlp -x --audio-format mp3 "URL_VIDEO"
 
-```
+### ⛔ 2. แก้ปัญหา `[Errno 13] Permission denied`
+
+* **สาเหตุ:** โปรแกรมพยายามบันทึกไฟล์ลงในโฟลเดอร์ระบบ (เช่น `C:\WINDOWS\system32`)
+* **วิธีแก้:** เพิ่มพารามิเตอร์ `-P "C:\Users\petch\Downloads"` เพื่อระบุตำแหน่งบันทึกไฟล์ไปที่โฟลเดอร์ Downloads
+
+### 🌍 3. แก้ปัญหา `This video may be deleted or geo-restricted`
+
+* **สาเหตุ:** คลิปถูกลบ หรือจำกัดการเข้าถึงเฉพาะในประเทศจีน (Region Lock)
+
+
+* **วิธีแก้:** ใช้ VPN หรือ Proxy ที่เชื่อมต่อไปยังประเทศจีนก่อนทำการดาวน์โหลด
+
 
 
 ---
 
 ## 🎯 ตัวอย่างผลลัพธ์การดาวน์โหลดสำเร็จ (Success Example)
 
-ภาพตัวอย่างการใช้คำสั่ง `yt-dlp` ระบุโฟลเดอร์ปลายทาง (`-P`) เพื่อดาวน์โหลดและผสานไฟล์วิดีโอจาก YouTube สำเร็จ:
+**YouTube**
+![YouTube Success](image.png)
 
-![Success Output](image.png)
+**Reels**
+![Reels Success](image%20(2).png)
+
+**Facebook**
+![Facebook Success](image%20(3).png)
+
+**Bilibili (จีน)**
+![Bilibili Success](image%20(4).png)
+
+**Streamable**
+![Streamable Success](image%20(5).png)
 
 ---
 
